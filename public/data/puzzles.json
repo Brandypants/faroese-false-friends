@@ -49,8 +49,8 @@
   },
   {
     "id": "kandidat",
-    "word": "kandidat",
-    "prompt": "Hvat merkir “kandidat” í einum val-samanhangi?",
+    "word": "valevni",
+    "prompt": "Hvat merkir “valevni” í einum val-samanhangi?",
     "choices": ["a candidate", "a lawyer", "a calendar", "a cashier"],
     "answerIndex": 0,
     "explain": "Her er tað sama sum á enskum: persónur sum stillar upp."

@@ -3,54 +3,101 @@
   --card: rgba(255, 255, 255, 0.06);
   --cardBorder: rgba(255, 255, 255, 0.12);
   --text: rgba(255, 255, 255, 0.92);
-  --muted: rgba(255, 255, 255, 0.70);
+  --muted: rgba(255, 255, 255, 0.72);
   --faint: rgba(255, 255, 255, 0.55);
 
   --goodBg: rgba(34, 197, 94, 0.18);
   --badBg: rgba(239, 68, 68, 0.18);
   --neutralBg: rgba(255, 255, 255, 0.05);
 
-  --shadow: 0 18px 60px rgba(0,0,0,0.45);
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
 }
 
 .page {
   min-height: 100vh;
-  width: 100vw;                 /* fill viewport width no matter what */
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 40px;
+  padding-top: 34px;
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: radial-gradient(1200px 700px at 20% 0%, rgba(56,189,248,0.22), transparent 60%),
-              radial-gradient(900px 600px at 90% 20%, rgba(167,139,250,0.18), transparent 55%),
-              var(--bg);
+  background: radial-gradient(
+      1200px 700px at 20% 0%,
+      rgba(56, 189, 248, 0.22),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 90% 20%,
+      rgba(167, 139, 250, 0.18),
+      transparent 55%
+    ),
+    var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 .app {
-  width: min(720px, calc(100vw - 32px));  /* responsive + centered */
-  padding: 24px 16px 40px;
+  width: min(760px, calc(100vw - 32px));
+  padding: 18px 0 40px;
   box-sizing: border-box;
 }
-
 
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
-.title {
-  margin: 0;
-  font-size: 22px;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandMark {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 18px;
   letter-spacing: 0.2px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brandName {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  line-height: 1.05;
+}
+
+.brandTag {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.rightHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
 }
 
 .pill {
@@ -59,57 +106,98 @@ body {
   padding: 6px 10px;
   border: 1px solid var(--cardBorder);
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.stats {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.4;
-  margin-bottom: 14px;
+.mini {
+  font-size: 12.5px;
+  color: var(--faint);
+  text-align: right;
+  line-height: 1.25;
+  max-width: 320px;
 }
 
 .card {
   background: var(--card);
   border: 1px solid var(--cardBorder);
-  border-radius: 18px;
+  border-radius: 20px;
   box-shadow: var(--shadow);
   padding: 18px;
   backdrop-filter: blur(10px);
 }
 
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.badge {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.82);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.timer {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
 .word {
-  font-size: 44px;
-  font-weight: 800;
+  font-size: 46px;
+  font-weight: 900;
   letter-spacing: 0.5px;
-  margin: 4px 0 6px;
+  margin: 6px 0 6px;
 }
 
 .prompt {
   font-size: 16px;
   color: var(--muted);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--faint);
+  margin-bottom: 14px;
 }
 
 .choices {
   display: grid;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .choiceBtn {
+  width: 100%;
   text-align: left;
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid var(--cardBorder);
-  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   cursor: pointer;
-  transition: transform 0.04s ease, background 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.04s ease, background 0.15s ease,
+    border-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .choiceBtn:hover {
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(255,255,255,0.22);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .choiceBtn:active {
@@ -118,7 +206,12 @@ body {
 
 .choiceBtn:disabled {
   cursor: default;
-  opacity: 0.95;
+  opacity: 0.97;
+}
+
+.choiceIcon {
+  opacity: 0.9;
+  font-weight: 900;
 }
 
 .choice-correct {
@@ -138,18 +231,41 @@ body {
 .result {
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,0.10);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resultTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .resultTitle {
-  font-weight: 750;
+  font-weight: 850;
   font-size: 16px;
 }
 
+.resultPills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.smallPill {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.82);
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .explain {
-  margin-top: 8px;
+  margin-top: 10px;
   color: var(--muted);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .actions {
@@ -162,14 +278,14 @@ body {
 .primaryBtn {
   padding: 10px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
   color: var(--text);
   cursor: pointer;
 }
 
 .primaryBtn:hover {
-  background: rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .copied {
@@ -177,8 +293,83 @@ body {
   color: var(--muted);
 }
 
+.privacyNote {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--faint);
+}
+
 .footer {
   margin-top: 14px;
   color: var(--faint);
   font-size: 13px;
 }
+
+.footerRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.dot {
+  opacity: 0.6;
+}
+
+.loadingLine {
+  height: 14px;
+  width: 60%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 10px;
+}
+
+.loadingLine.short {
+  width: 42%;
+}
+
+.loadingChoices {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.loadingBtn {
+  height: 46px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.brandMark {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+
+  display: grid;
+  place-items: center;
+
+  /* Key: give the image breathing room so it can never clip */
+  padding: 4px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+
+  overflow: hidden;
+}
+
+.brandLogo {
+  /* Key: don't force height/width to 100% if global img rules exist.
+     Instead, cap it safely inside the padded box. */
+  max-width: 100%;
+  max-height: 100%;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+  display: block;
+}
+
+

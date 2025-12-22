@@ -2,7 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { loadPuzzles, pickTodayPuzzle } from "./lib/puzzles";
 import type { Puzzle } from "./lib/puzzles";
-import { todayISO, applyResultToStats, loadStats, saveStats, loadDayResultV2, saveDayResultV2 } from "./lib/storage";
+import {
+  todayISO,
+  applyResultToStats,
+  loadStats,
+  saveStats,
+  loadDayResultV2,
+  saveDayResultV2,
+} from "./lib/storage";
 import { msUntilNextLocalMidnight, formatCountdown } from "./lib/time";
 
 type DayResult = { date: string; choiceIndex: number; correct: boolean };
@@ -13,7 +20,9 @@ export default function App() {
 
   const dateISO = useMemo(() => todayISO(), []);
   const [stats, setStats] = useState(() => loadStats());
-  const [countdown, setCountdown] = useState(() => formatCountdown(msUntilNextLocalMidnight()));
+  const [countdown, setCountdown] = useState(() =>
+    formatCountdown(msUntilNextLocalMidnight())
+  );
   const [copied, setCopied] = useState(false);
 
   const [dayResult, setDayResult] = useState<DayResult | null>(null);
@@ -65,10 +74,14 @@ export default function App() {
 
   function share() {
     if (!picked || !dayResult) return;
+
+    // Don't share the word or the chosen option; only the outcome.
     const title = `Orðafellan — ${dateISO}`;
-    const line = `${picked.puzzle.word} ${dayResult.correct ? "✅" : "❌"}`;
+    const outcome = dayResult.correct ? "✅" : "❌";
     const streak = `Streak: ${stats.streak}`;
-    const text = `${title}\n${line}\n${streak}`;
+    const next = `New in: ${countdown}`;
+
+    const text = `${title}\n${outcome}\n${streak}\n${next}`;
 
     navigator.clipboard
       .writeText(text)
@@ -79,69 +92,162 @@ export default function App() {
       .catch(() => {});
   }
 
-  if (error) return <div className="app">Error: {error}</div>;
-  if (!puzzles || !picked) return <div className="app">Loading…</div>;
+  if (error)
+    return (
+      <div className="page">
+        <div className="app">
+          <div className="card">
+            <div className="resultTitle">Error</div>
+            <div className="explain">{error}</div>
+          </div>
+        </div>
+      </div>
+    );
+
+  if (!puzzles || !picked)
+    return (
+      <div className="page">
+        <div className="app">
+          <header className="topbar">
+            <div className="brand">
+            <div className="brandMark">
+               <img className="brandLogo" src="/favi.png" alt="Orðafellan logo" />
+             </div>
+              <div>
+                <div className="brandName">Orðafellan</div>
+                <div className="brandTag">Eitt spæl um dagin</div>
+              </div>
+            </div>
+            <div className="pill">{dateISO}</div>
+          </header>
+
+          <main className="card">
+            <div className="loadingLine" />
+            <div className="loadingLine short" />
+            <div className="loadingChoices">
+              <div className="loadingBtn" />
+              <div className="loadingBtn" />
+              <div className="loadingBtn" />
+              <div className="loadingBtn" />
+            </div>
+          </main>
+
+          <footer className="footer">New puzzle in: {countdown}</footer>
+        </div>
+      </div>
+    );
 
   const { puzzle } = picked;
 
+  const headerStats = `Played ${stats.played} · Wins ${stats.wins} · Streak ${stats.streak} · Best ${stats.maxStreak}`;
+
   return (
     <div className="page">
-    <div className="app">
-      <header className="topbar">
-        <div>
-          <h1 className="title">Orðafellan</h1>
-          <div className="stats">
-            Played: {stats.played} · Wins: {stats.wins} · Streak: {stats.streak} · Best: {stats.maxStreak}
+      <div className="app">
+        <header className="topbar">
+          <div className="brand">
+          <div className="brandMark">
+              <img className="brandLogo" src="/favicon.png" alt="Orðafellan logo" />
           </div>
-        </div>
-        <div className="pill">{dateISO}</div>
-      </header>
 
-      <main className="card">
-        <div className="word">{puzzle.word}</div>
-        <div className="prompt">{puzzle.prompt}</div>
-
-        <div className="choices">
-          {puzzle.choices.map((c, idx) => {
-            const locked = !!dayResult;
-            const isCorrect = idx === puzzle.answerIndex;
-            const isChosen = dayResult?.choiceIndex === idx;
-
-            const className =
-              "choiceBtn " +
-              (locked
-                ? isCorrect
-                  ? "choice-correct"
-                  : isChosen
-                  ? "choice-wrong"
-                  : "choice-neutral"
-                : "");
-
-            return (
-              <button key={idx} onClick={() => onChoose(idx)} disabled={locked} className={className}>
-                {c}
-              </button>
-            );
-          })}
-        </div>
-
-        {dayResult && (
-          <div className="result">
-            <div className="resultTitle">{dayResult.correct ? "Correct ✅" : "Not quite ❌"}</div>
-            {puzzle.explain && <div className="explain">{puzzle.explain}</div>}
-
-            <div className="actions">
-              <button onClick={share} className="primaryBtn">
-                Share
-              </button>
-              {copied && <div className="copied">Copied!</div>}
+            <div className="brandText">
+              <div className="brandName">Orðafellan</div>
+              <div className="brandTag">Eitt spæl um dagin</div>
             </div>
           </div>
-        )}
-      </main>
 
-      <footer className="footer">New puzzle in: {countdown}</footer>
-    </div>
+          <div className="rightHeader">
+            <div className="pill">{dateISO}</div>
+            <div className="mini">{headerStats}</div>
+          </div>
+        </header>
+
+        <main className="card">
+          <div className="cardHeader">
+            <div className="badge">Dagsins orð</div>
+            <div className="timer">
+              New puzzle in <span className="mono">{countdown}</span>
+            </div>
+          </div>
+
+          <div className="word">{puzzle.word}</div>
+          <div className="prompt">{puzzle.prompt}</div>
+
+          <div className="choices">
+            {puzzle.choices.map((c, idx) => {
+              const locked = !!dayResult;
+              const isCorrect = idx === puzzle.answerIndex;
+              const isChosen = dayResult?.choiceIndex === idx;
+
+              const className =
+                "choiceBtn " +
+                (locked
+                  ? isCorrect
+                    ? "choice-correct"
+                    : isChosen
+                    ? "choice-wrong"
+                    : "choice-neutral"
+                  : "");
+
+              return (
+                <button
+                  key={idx}
+                  onClick={() => onChoose(idx)}
+                  disabled={locked}
+                  className={className}
+                  aria-pressed={isChosen}
+                >
+                  {c}
+                  {locked && isCorrect && <span className="choiceIcon">✓</span>}
+                  {locked && isChosen && !isCorrect && (
+                    <span className="choiceIcon">×</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {dayResult && (
+            <div className="result">
+              <div className="resultTop">
+                <div className="resultTitle">
+                  {dayResult.correct ? "Rætt ✅" : "Ikki heilt ❌"}
+                </div>
+
+                <div className="resultPills">
+                  <span className="smallPill">
+                    {dayResult.correct ? "Win" : "Loss"}
+                  </span>
+                  <span className="smallPill">Streak {stats.streak}</span>
+                </div>
+              </div>
+
+              {puzzle.explain && <div className="explain">{puzzle.explain}</div>}
+
+              <div className="actions">
+                <button onClick={share} className="primaryBtn">
+                  Share result
+                </button>
+                {copied && <div className="copied">Copied!</div>}
+              </div>
+
+              <div className="privacyNote">
+                Deilir bara um tú hevði rætt/ikki rætt — ikki orðið.
+              </div>
+            </div>
+          )}
+        </main>
+
+        <footer className="footer">
+          <div className="footerRow">
+            <span className="mono">Orðafellan</span>
+            <span className="dot">•</span>
+            <span>One puzzle per day</span>
+            <span className="dot">•</span>
+            <span>Stats saved on this device</span>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

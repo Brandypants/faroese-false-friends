@@ -1,0 +1,82 @@
+[
+  {
+    "id": "raad",
+    "word": "ráð",
+    "prompt": "Hvat merkir “ráð” best?",
+    "choices": ["a road", "permission", "counsel / guidance", "a tool"],
+    "answerIndex": 2,
+    "explain": "“ráð” merkir ráðlegging/vegleiðing."
+  },
+  {
+    "id": "eventuelt",
+    "word": "eventuelt",
+    "prompt": "Hvat merkir “eventuelt” best (t.d. á fundarskrá)?",
+    "choices": ["eventually", "misc / any other business", "maybe", "instantly"],
+    "answerIndex": 1,
+    "explain": "Á fundarskrá merkir “eventuelt” vanliga ymisk mál."
+  },
+  {
+    "id": "aktuelt",
+    "word": "aktuelt",
+    "prompt": "Hvat merkir “aktuelt” best?",
+    "choices": ["currently relevant", "actually (in fact)", "ancient", "optional"],
+    "answerIndex": 0,
+    "explain": "“aktuelt” = tað, sum er viðkomandi/beint nú, ikki 'actually'."
+  },
+  {
+    "id": "kontrol",
+    "word": "kontrolla",
+    "prompt": "Hvat merkir “kontrolla” best?",
+    "choices": ["to check / verify", "to control someone", "to delete", "to translate"],
+    "answerIndex": 0,
+    "explain": "Ofta brúkt sum 'kanna/eftirkanna'."
+  },
+  {
+    "id": "praktisk",
+    "word": "praktiskur",
+    "prompt": "Hvat merkir “praktiskur” best?",
+    "choices": ["hands-on / useful", "theoretical", "expensive", "private"],
+    "answerIndex": 0,
+    "explain": "“praktiskur” = nytsamur/hands-on, ikki 'praktical joke'."
+  },
+  {
+    "id": "eventyr",
+    "word": "ævintýr",
+    "prompt": "Hvat merkir “ævintýr” best?",
+    "choices": ["an adventure / fairy tale", "an event", "a letter", "a schedule"],
+    "answerIndex": 0,
+    "explain": "“ævintýr” kann vera ævintýr (frásøgn) og eisini uppliving."
+  },
+  {
+    "id": "kandidat",
+    "word": "kandidat",
+    "prompt": "Hvat merkir “kandidat” best í einum val-samanhangi?",
+    "choices": ["a candidate", "a lawyer", "a calendar", "a cashier"],
+    "answerIndex": 0,
+    "explain": "Her er tað sama sum á enskum: persónur sum stillar upp."
+  },
+  {
+    "id": "telefonera",
+    "word": "telefonera",
+    "prompt": "Hvat merkir “telefonera” best?",
+    "choices": ["to phone / call", "to download", "to photograph", "to walk"],
+    "answerIndex": 0,
+    "explain": "“telefonera” = ringja/gera telefonuppringing."
+  },
+  {
+    "id": "fabrik",
+    "word": "fabrik",
+    "prompt": "Hvat merkir “fabrik” best?",
+    "choices": ["a factory", "a fabric (cloth)", "a Facebook post", "a fee"],
+    "answerIndex": 0,
+    "explain": "“fabrik” = virki (factory), ikki 'fabric'."
+  },
+  {
+    "id": "eventyrur",
+    "word": "eventyrligur",
+    "prompt": "Hvat merkir “eventyrligur” best?",
+    "choices": ["adventurous / fairy-tale-like", "eventual", "ordinary", "official"],
+    "answerIndex": 0,
+    "explain": "Lýsingarorð til nakað ævintýrligt."
+  }
+]

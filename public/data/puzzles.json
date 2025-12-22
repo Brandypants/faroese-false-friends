@@ -1,74 +1,82 @@
 [
   {
-    "id": "raad",
-    "word": "ráð",
-    "prompt": "Hvat merkir “ráð” á enskum?",
-    "choices": ["a road", "permission", "counsel / guidance", "a tool"],
+    "id": "amicus",
+    "word": "amicus",
+    "prompt": "Hvat merkir latínska orðið “amicus”?",
+    "choices": ["vinur", "fíggindi", "lærari", "ókendur"],
+    "answerIndex": 0,
+    "explain": "“amicus” merkir vinur. Tað er upprunin til orð sum 'amicable'."
+  },
+  {
+    "id": "aqua",
+    "word": "aqua",
+    "prompt": "Hvat merkir latínska orðið “aqua”?",
+    "choices": ["eldur", "luft", "jørð", "vatn"],
+    "answerIndex": 3,
+    "explain": "“aqua” merkir vatn og sæst í orðum sum 'akvarium'."
+  },
+  {
+    "id": "bonus",
+    "word": "bonus",
+    "prompt": "Hvat merkir latínska orðið “bonus”?",
+    "choices": ["ringur", "nýggjur", "góður", "stórur"],
     "answerIndex": 2,
-    "explain": "“ráð” merkir ráðlegging/vegleiðing."
+    "explain": "“bonus” merkir góður. Orðið er nógv brúkt á mongum málum."
   },
   {
-    "id": "eventuelt",
-    "word": "eventuelt",
-    "prompt": "Hvat merkir “eventuelt” (t.d. á einari fundarskrá)?",
-    "choices": ["eventually", "misc / any other business", "maybe", "instantly"],
+    "id": "magnus",
+    "word": "magnus",
+    "prompt": "Hvat merkir latínska orðið “magnus”?",
+    "choices": ["lítil", "gamal", "stórur / mikil", "skjótur"],
+    "answerIndex": 2,
+    "explain": "“magnus” merkir stórur ella mikil. Karlamagnus = Karl hin mikli."
+  },
+  {
+    "id": "pax",
+    "word": "pax",
+    "prompt": "Hvat merkir latínska orðið “pax”?",
+    "choices": ["kríggj", "friður", "lóg", "vald"],
     "answerIndex": 1,
-    "explain": "Á fundarskrá merkir “eventuelt” vanliga ymisk mál."
+    "explain": "“pax” merkir friður, t.d. 'Pax Romana'."
   },
   {
-    "id": "aktuelt",
-    "word": "aktuelt",
-    "prompt": "Hvat merkir “aktuelt”?",
-    "choices": ["currently relevant", "actually (in fact)", "ancient", "optional"],
-    "answerIndex": 0,
-    "explain": "“aktuelt” = tað, sum er viðkomandi/beint nú, ikki 'actually'."
+    "id": "tempus",
+    "word": "tempus",
+    "prompt": "Hvat merkir latínska orðið “tempus”?",
+    "choices": ["veður", "tíð", "staður", "tal"],
+    "answerIndex": 1,
+    "explain": "“tempus” merkir tíð og verður nógv brúkt í málfrøði."
   },
   {
-    "id": "kontrol",
-    "word": "at kanna",
-    "prompt": "Hvat merkir tað at kanna okkurt?",
-    "choices": ["to check / verify", "to control someone", "to delete", "to translate"],
-    "answerIndex": 0,
-    "explain": "Ofta brúkt sum 'kanna/eftirkanna'."
+    "id": "via",
+    "word": "via",
+    "prompt": "Hvat merkir latínska orðið “via”?",
+    "choices": ["hús", "vegur / leið", "býur", "sjógvur"],
+    "answerIndex": 1,
+    "explain": "“via” merkir vegur. Sæst í orðum sum 'avvik' (deviation)."
   },
   {
-    "id": "praktisk",
-    "word": "handligur",
-    "prompt": "Hvat merkir tað at vera handligur?",
-    "choices": ["hands-on / useful", "theoretical", "expensive", "private"],
+    "id": "vita",
+    "word": "vita",
+    "prompt": "Hvat merkir latínska orðið “vita”?",
+    "choices": ["lív", "sigur", "kunnleiki", "styrki"],
     "answerIndex": 0,
-    "explain": "“praktiskur” = nytsamur/hands-on, ikki 'praktical joke'."
+    "explain": "“vita” merkir lív. Kendi setningurin 'vita brevis' merkir 'lívið er stutt'."
   },
   {
-    "id": "eventyr",
-    "word": "ævintýr",
-    "prompt": "Hvat merkir eitt ævintýr?",
-    "choices": ["an adventure / fairy tale", "an event", "a letter", "a schedule"],
-    "answerIndex": 0,
-    "explain": "“ævintýr” kann vera ævintýr (frásøgn) og eisini uppliving."
+    "id": "luna",
+    "word": "luna",
+    "prompt": "Hvat merkir latínska orðið “luna”?",
+    "choices": ["sól", "stjørna", "máni", "nátt"],
+    "answerIndex": 2,
+    "explain": "“luna” merkir máni og liggur aftanfyri orð sum 'lunar'."
   },
   {
-    "id": "kandidat",
-    "word": "valevni",
-    "prompt": "Hvat merkir “valevni” í einum val-samanhangi?",
-    "choices": ["a candidate", "a lawyer", "a calendar", "a cashier"],
-    "answerIndex": 0,
-    "explain": "Her er tað sama sum á enskum: persónur sum stillar upp."
-  },
-  {
-    "id": "ringja",
-    "word": "telefonera",
-    "prompt": "Hvat merkir tað at ringja?",
-    "choices": ["to phone / call", "to download", "to photograph", "to walk"],
-    "answerIndex": 0,
-    "explain": "“telefonera” = ringja/gera telefonuppringing."
-  },
-  {
-    "id": "fabrik",
-    "word": "verksmiðja",
-    "prompt": "Hvat merkir ein verksmiðja?",
-    "choices": ["a factory", "a fabric (cloth)", "a Facebook post", "a fee"],
-    "answerIndex": 0,
-    "explain": "“fabrik” = virki (factory), ikki 'fabric'."
+    "id": "verbum",
+    "word": "verbum",
+    "prompt": "Hvat merkir latínska orðið “verbum”?",
+    "choices": ["setningur", "bókstavur", "orð", "ljóð"],
+    "answerIndex": 2,
+    "explain": "“verbum” merkir orð og verður nógv brúkt í málfrøði."
   }
 ]

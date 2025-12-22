@@ -65,7 +65,7 @@ export default function App() {
 
   function share() {
     if (!picked || !dayResult) return;
-    const title = `Faroese False Friends — ${dateISO}`;
+    const title = `Orðafellan — ${dateISO}`;
     const line = `${picked.puzzle.word} ${dayResult.correct ? "✅" : "❌"}`;
     const streak = `Streak: ${stats.streak}`;
     const text = `${title}\n${line}\n${streak}`;
@@ -89,7 +89,7 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div>
-          <h1 className="title">Faroese False Friends</h1>
+          <h1 className="title">Orðafellan</h1>
           <div className="stats">
             Played: {stats.played} · Wins: {stats.wins} · Streak: {stats.streak} · Best: {stats.maxStreak}
           </div>

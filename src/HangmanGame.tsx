@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import { todayISO, applyResultToStats, loadStats, saveStats } from "./lib/storage";
+import { applyResultToStats, loadStats, saveStats } from "./lib/storage";
 import { msUntilNextLocalMidnight, formatCountdown } from "./lib/time";
 import { loadHangmanPuzzles } from "./lib/hangmanPuzzles";
 import type { HangmanPuzzle, HangmanState } from "./lib/hangman";
@@ -75,7 +75,6 @@ export default function HangmanGame() {
   const [puzzles, setPuzzles] = useState<HangmanPuzzle[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const todayIso = useMemo(() => todayISO(), []);
   const [stats, setStats] = useState(() => loadStats());
   const [countdown, setCountdown] = useState(() => formatCountdown(msUntilNextLocalMidnight()));
   const [copied, setCopied] = useState(false);

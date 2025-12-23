@@ -222,7 +222,7 @@ export default function HangmanGame() {
 
     // Privacy-friendly: does NOT include the saying
     // NOTE: update this URL to your real domain once it’s live.
-    const text = `${title}\n${icons}\n${streak}\n${next}\nhttps://faroese-false-friends.pages.dev/`;
+    const text = `${title}\n${icons}\n${streak}\n${next}\nhttps://www.ordafellan.fo/`;
 
     navigator.clipboard
       .writeText(text)

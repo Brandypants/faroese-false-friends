@@ -79,3 +79,15 @@ export function applyResultToStats(stats: Stats, result: DayResult): Stats {
 export function todayISO(): string {
   return toISODate(new Date());
 }
+
+const KEY_HANGMAN_PREFIX = "hang_v1_";
+
+export function loadHangmanState(key: string) {
+  const raw = localStorage.getItem(KEY_HANGMAN_PREFIX + key);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+export function saveHangmanState(key: string, state: any) {
+  localStorage.setItem(KEY_HANGMAN_PREFIX + key, JSON.stringify(state));
+}

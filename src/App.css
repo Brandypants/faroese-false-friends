@@ -372,4 +372,238 @@ body {
   display: block;
 }
 
+/* ---------- Hangman UI additions ---------- */
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.iconBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.07);
+  color: var(--text);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.iconBtn:hover {
+  background: rgba(255,255,255,0.11);
+}
+
+/* Lives row */
+.livesRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.life {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.20);
+}
+
+.life-full {
+  background: rgba(255,255,255,0.70);
+}
+
+.life-empty {
+  background: rgba(255,255,255,0.10);
+  opacity: 0.7;
+}
+
+.livesText {
+  margin-left: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* Masked sentence */
+.masked {
+  margin-top: 10px;
+  font-size: 28px;
+  font-weight: 850;
+  letter-spacing: 2px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+/* Keyboard */
+.keyboard {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.keyboardRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.key {
+  min-width: 42px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.key:hover {
+  background: rgba(255,255,255,0.10);
+}
+
+.key:disabled {
+  cursor: default;
+}
+
+/* Letter highlighting */
+.key-unused {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.16);
+}
+
+.key-correct {
+  background: rgba(34, 197, 94, 0.22);
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.key-wrong {
+  background: rgba(239, 68, 68, 0.20);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  z-index: 50;
+}
+
+.modal {
+  width: min(560px, 100%);
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.modalTitle {
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.modalBody {
+  padding: 14px;
+  color: var(--text);
+}
+
+.modalBody p {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.modalBody ul {
+  margin: 10px 0 12px;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 10px;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.legendSwatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.16);
+  display: inline-block;
+}
+
+.modalFooterNote {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--faint);
+}
+
+/* Hangman drawing */
+.hangmanRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.hangmanSvg {
+  width: 120px;
+  height: auto;
+  flex: 0 0 auto;
+  opacity: 0.95;
+}
+
+.hangmanStroke {
+  stroke: rgba(255, 255, 255, 0.78);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.hangmanMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hangmanLabel {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.hangmanValue {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+
 

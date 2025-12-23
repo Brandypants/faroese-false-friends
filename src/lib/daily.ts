@@ -1,4 +1,4 @@
-export const START_DATE = "2025-12-22"; // choose your “Day 0”
+export const START_DATE = "2025-12-23"; // choose your “Day 0”
 
 export function toISODate(d: Date): string {
   // local date (not UTC) so it matches Faroese users’ expectations

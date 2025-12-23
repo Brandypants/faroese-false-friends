@@ -52,16 +52,6 @@ function initialState(): HangmanState {
   return { guesses: [], wrong: 0, status: "playing" };
 }
 
-function livesArray(wrong: number) {
-  // 6 lives total -> show 6 dots, filled for remaining, empty for used
-  const used = Math.min(Math.max(wrong, 0), MAX_LIVES);
-  const remaining = MAX_LIVES - used;
-  return [
-    ...Array.from({ length: remaining }, () => "full" as const),
-    ...Array.from({ length: used }, () => "empty" as const),
-  ];
-}
-
 export default function HangmanGame() {
   const [puzzles, setPuzzles] = useState<HangmanPuzzle[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -115,8 +105,6 @@ export default function HangmanGame() {
     if (!picked) return "";
     return mask(picked.puzzle.solution, guessesSet);
   }, [picked, guessesSet]);
-
-  const lives = useMemo(() => livesArray(state.wrong), [state.wrong]);
 
   function commit(next: HangmanState) {
     if (!picked || !dayKey) return;

@@ -62,17 +62,20 @@ body {
 }
 
 .brandMark {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  font-size: 18px;
-  letter-spacing: 0.2px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+  width: 56px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;          /* remove spacing */
+  background: none;    /* remove background */
+  border: none;        /* remove border */
+  box-shadow: none;    /* remove shadow */
+  border-radius: 0;    /* no rounded container */
+
+  overflow: visible;   /* ensure logo is never clipped */
 }
 
 .brandText {
@@ -339,24 +342,6 @@ body {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.brandMark {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-
-  display: grid;
-  place-items: center;
-
-  /* Key: give the image breathing room so it can never clip */
-  padding: 4px;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
-
-  overflow: hidden;
 }
 
 .brandLogo {

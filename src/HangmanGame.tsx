@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { todayISO, applyResultToStats, loadStats, saveStats } from "./lib/storage";
 import { msUntilNextLocalMidnight, formatCountdown } from "./lib/time";
-import { loadHangmanPuzzles, pickTodayHangman } from "./lib/hangmanPuzzles";
+import { loadHangmanPuzzles } from "./lib/hangmanPuzzles";
 import type { HangmanPuzzle, HangmanState } from "./lib/hangman";
 import { MAX_LIVES, mask, nextState, norm, solutionLetters } from "./lib/hangman";
 import { loadHangmanState, saveHangmanState } from "./lib/storage";
@@ -52,15 +52,37 @@ function initialState(): HangmanState {
   return { guesses: [], wrong: 0, status: "playing" };
 }
 
+// Local YYYY-MM-DD (avoid UTC surprises)
+function localISO(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+// Launch day: set this to "today" and keep it fixed.
+// IMPORTANT: once you deploy, DO NOT change this date unless you want to reshuffle the schedule.
+const START_DATE_ISO = localISO(new Date());
+
+function daysBetweenLocal(a: Date, b: Date) {
+  const aa = new Date(a.getFullYear(), a.getMonth(), a.getDate()).getTime();
+  const bb = new Date(b.getFullYear(), b.getMonth(), b.getDate()).getTime();
+  return Math.floor((aa - bb) / (1000 * 60 * 60 * 24));
+}
+
+
 export default function HangmanGame() {
   const [puzzles, setPuzzles] = useState<HangmanPuzzle[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const dateISO = useMemo(() => todayISO(), []);
+  const todayIso = useMemo(() => todayISO(), []);
   const [stats, setStats] = useState(() => loadStats());
   const [countdown, setCountdown] = useState(() => formatCountdown(msUntilNextLocalMidnight()));
   const [copied, setCopied] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+
+  // 0 = í dag, 1 = í gjár, ...
+  const [dayOffset, setDayOffset] = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -75,15 +97,45 @@ export default function HangmanGame() {
       .catch((e) => setError(e instanceof Error ? e.message : String(e)));
   }, []);
 
+  // Compute selected date and ISO
+  const selectedDate = useMemo(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - dayOffset);
+    return d;
+  }, [dayOffset]);
+
+  const selectedDateISO = useMemo(() => localISO(selectedDate), [selectedDate]);
+
+  // Limit browsing so it doesn't scroll forever: one full cycle of your puzzles
+  const maxOffset = 0;
+
+  useEffect(() => {
+    if (dayOffset > maxOffset) setDayOffset(maxOffset);
+  }, [dayOffset, maxOffset]);
+
+  // Pick puzzle deterministically based on "today index - offset"
   const picked = useMemo(() => {
     if (!puzzles) return null;
-    return pickTodayHangman(puzzles, new Date());
+  
+    const start = new Date(START_DATE_ISO + "T00:00:00");
+    const today = new Date();
+    const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  
+    // dayIndex: 0 today, 1 tomorrow, etc.
+    const dayIndex = daysBetweenLocal(todayLocal, start);
+  
+    // Use dayIndex directly (0..puzzles.length-1). After that, wrap.
+    const idx = ((dayIndex % puzzles.length) + puzzles.length) % puzzles.length;
+  
+    return { dayIndex, puzzle: puzzles[idx] };
   }, [puzzles]);
+  
 
+  // Key per selected day so archive doesn't reuse today's state
   const dayKey = useMemo(() => {
     if (!picked) return null;
-    return `hang__${dateISO}__${picked.dayIndex}__${picked.puzzle.id}`;
-  }, [picked, dateISO]);
+    return `hang__${selectedDateISO}__${picked.dayIndex}__${picked.puzzle.id}`;
+  }, [picked, selectedDateISO]);
 
   const [state, setState] = useState<HangmanState>(() => initialState());
 
@@ -115,12 +167,32 @@ export default function HangmanGame() {
     setState(next);
     saveHangmanState(dayKey, next);
 
-    // Update streak/stats only once when the day finishes
+    // Update stats only once when the puzzle ends
     if (wasPlaying && nowEnded) {
-      const result = { date: dateISO, choiceIndex: -1, correct: next.status === "won" };
-      const updated = applyResultToStats(stats, result);
-      saveStats(updated);
-      setStats(updated);
+      const isToday = dayOffset === 0;
+
+      if (isToday) {
+        // Normal stats + streak for today
+        const result = {
+          date: selectedDateISO,
+          choiceIndex: -1,
+          correct: next.status === "won",
+        };
+        const updated = applyResultToStats(stats, result);
+        saveStats(updated);
+        setStats(updated);
+      } else {
+        // Rule 1: archive play affects played/wins only, not streak/maxStreak
+        const updated = {
+          ...stats,
+          played: (stats.played ?? 0) + 1,
+          wins: (stats.wins ?? 0) + (next.status === "won" ? 1 : 0),
+          streak: stats.streak ?? 0,
+          maxStreak: stats.maxStreak ?? 0,
+        };
+        saveStats(updated);
+        setStats(updated);
+      }
     }
   }
 
@@ -142,14 +214,16 @@ export default function HangmanGame() {
     if (!picked) return;
     if (state.status === "playing") return;
 
-    const title = `Orðafellan Hangman — ${dateISO}`;
-    const outcome = state.status === "won" ? "✅" : "❌";
-    const score = `${MAX_LIVES - state.wrong}/${MAX_LIVES}`;
+    const title = `Hangman (Orðafellan) — ${selectedDateISO}`;
+    const correctIcons = "✅".repeat(MAX_LIVES - state.wrong);
+    const wrongIcons = "❌".repeat(state.wrong);
+    const icons = `${wrongIcons}${correctIcons}`;
     const streak = `Streak: ${stats.streak}`;
-    const next = `New in: ${countdown}`;
+    const next = `Nýggj gáta um: ${countdown} tímar`;
 
     // Privacy-friendly: does NOT include the saying
-    const text = `${title}\n${outcome} ${score}\n${streak}\n${next}`;
+    // NOTE: update this URL to your real domain once it’s live.
+    const text = `${title}\n${icons}\n${streak}\n${next}\nhttps://faroese-false-friends.pages.dev/`;
 
     navigator.clipboard
       .writeText(text)
@@ -200,6 +274,7 @@ export default function HangmanGame() {
 
   const headerStats = `Spælt ${stats.played} · Vunnið ${stats.wins} · Streak ${stats.streak} · Best ${stats.maxStreak}`;
   const hint = picked.puzzle.hint;
+  const isToday = dayOffset === 0;
 
   return (
     <div className="page">
@@ -220,31 +295,55 @@ export default function HangmanGame() {
               <button className="iconBtn" onClick={() => setShowHelp(true)} aria-label="Hvussu spæli eg?">
                 ?
               </button>
-              <div className="pill">{dateISO}</div>
+
+              <button
+                className="iconBtn"
+                onClick={() => setDayOffset((x) => Math.min(maxOffset, x + 1))}
+                disabled={dayOffset >= maxOffset}
+                aria-label="Fyri dag"
+                title="Fyri dag"
+              >
+                ←
+              </button>
+
+              <div className="pill" title={isToday ? "Í dag" : "Fyri dag"}>
+                {selectedDateISO}
+                {isToday ? " · Í dag" : ""}
+              </div>
+
+              <button
+                className="iconBtn"
+                onClick={() => setDayOffset((x) => Math.max(0, x - 1))}
+                disabled={dayOffset <= 0}
+                aria-label="Næsti dagur"
+                title="Næsti dagur"
+              >
+                →
+              </button>
             </div>
+
             <div className="mini">{headerStats}</div>
           </div>
         </header>
 
         <main className="card">
           <div className="cardHeader">
-            <div className="badge">Dagsins orðatak</div>
+            <div className="badge">{isToday ? "Dagsins orðatak" : "Frá arkivinum"}</div>
             <div className="timer">
               Nýtt spæl um <span className="mono">{countdown}</span>
             </div>
           </div>
 
           {/* Hangman drawing */}
-<div className="hangmanRow">
-  <HangmanFigure wrong={state.wrong} />
-  <div className="hangmanMeta">
-    <div className="hangmanLabel">Mistøk</div>
-    <div className="hangmanValue">
-      {state.wrong} / {MAX_LIVES}
-    </div>
-  </div>
-</div>
-
+          <div className="hangmanRow">
+            <HangmanFigure wrong={state.wrong} />
+            <div className="hangmanMeta">
+              <div className="hangmanLabel">Mistøk</div>
+              <div className="hangmanValue">
+                {state.wrong} / {MAX_LIVES}
+              </div>
+            </div>
+          </div>
 
           {hint && <div className="hint">Hint: {hint}</div>}
 
@@ -295,6 +394,7 @@ export default function HangmanGame() {
               </div>
 
               <div className="privacyNote">Deilir bara úrslitið — ikki orðatakið.</div>
+              {!isToday && <div className="privacyNote">Arkiv-spøl telja ikki við í streak.</div>}
             </div>
           )}
         </main>

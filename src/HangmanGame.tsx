@@ -215,11 +215,11 @@ export default function HangmanGame() {
     if (!picked) return;
     if (state.status === "playing") return;
 
-    const title = `Hangman (Orðafellan) — ${selectedDateISO}`;
+    const gameNumber = picked.dayIndex + 1;
+    const title = `Orðafellan #${gameNumber}`;
     const icons = `${"❌".repeat(state.wrong)}${"✅".repeat(MAX_LIVES - state.wrong)}`;
     const streak = `Streak: ${stats.streak}`;
-    const next = `Nýggj gáta um: ${countdown} tímar`;
-    const text = `${title}\n${icons}\n${streak}\n${next}\nhttps://ordafellan.fo/`;
+    const text = `${title}\n${icons}\n${streak}\nhttps://ordafellan.fo/`;
 
     navigator.clipboard
       .writeText(text)

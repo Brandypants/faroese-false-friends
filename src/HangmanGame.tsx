@@ -375,9 +375,8 @@ export default function HangmanGame() {
 
   {/* Row 2: Stats (centered) */}
   <div className="footerStats">{headerStats}</div>
+  <div className="spacer" />
 </div>
-
-
         {showHelp && (
           <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="How to play" onMouseDown={closeHelp}>
             <div className="modal" onMouseDown={(e) => e.stopPropagation()}>

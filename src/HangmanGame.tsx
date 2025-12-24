@@ -18,7 +18,12 @@ function HangmanFigure({ wrong }: { wrong: number }) {
   const showRightLeg = w >= 6;
 
   return (
-    <svg viewBox="0 0 140 160" className="hangmanSvg" role="img" aria-label={`Hangman figure. Wrong guesses: ${w} of 6.`}>
+    <svg
+      viewBox="0 0 140 160"
+      className="hangmanSvg"
+      role="img"
+      aria-label={`Hangman figure. Wrong guesses: ${w} of 6.`}
+    >
       <line x1="20" y1="140" x2="120" y2="140" className="hangmanStroke" />
       <line x1="40" y1="140" x2="40" y2="20" className="hangmanStroke" />
       <line x1="40" y1="20" x2="90" y2="20" className="hangmanStroke" />
@@ -92,7 +97,6 @@ export default function HangmanGame() {
   const [showResult, setShowResult] = useState(false);
 
   const START_DATE_ISO = useMemo(() => getOrInitStartDateISO(), []);
-
   const [dayOffset, setDayOffset] = useState(0);
 
   useEffect(() => {
@@ -275,70 +279,69 @@ export default function HangmanGame() {
   return (
     <div className="page">
       <div className="app">
-        {/* ✅ GAME FIRST (mobile users see keyboard immediately) */}
         <main className="card gameCard">
-  <div className="gameTop">
-    <div className="cardHeader">
-      <div className="badge">Dagsins orðatak</div>
-      <div className="timer">
-        Nýtt spæl um <span className="mono">{countdown}</span>
-      </div>
-    </div>
+          <div className="gameTop">
+            <div className="cardHeader">
+              <div className="badge">Dagsins orðatak</div>
+              <div className="timer">
+                Nýtt spæl um <span className="mono">{countdown}</span>
+              </div>
+            </div>
 
-    <div className="hangmanRow">
-      <HangmanFigure wrong={state.wrong} />
-      <div className="hangmanMeta">
-        <div className="hangmanLabel">Mistøk</div>
-        <div className="hangmanValue">
-          {state.wrong} / {MAX_LIVES}
-        </div>
-      </div>
-    </div>
+            <div className="hangmanRow">
+              <HangmanFigure wrong={state.wrong} />
+              <div className="hangmanMeta">
+                <div className="hangmanLabel">Mistøk</div>
+                <div className="hangmanValue">
+                  {state.wrong} / {MAX_LIVES}
+                </div>
+              </div>
+            </div>
 
-    {hint && <div className="hint">Hint: {hint}</div>}
+            {hint && <div className="hint">Hint: {hint}</div>}
 
-    <div className="masked" aria-label="Puzzle">
-      {masked}
-    </div>
-  </div>
+            <div className="masked" aria-label="Puzzle">
+              {masked}
+            </div>
+          </div>
 
-  <div className="gameKeyboard">
-    <div className="keyboard" role="group" aria-label="On-screen keyboard">
-      {KEYBOARD_ROWS.map((row, rIdx) => (
-        <div key={rIdx} className="keyboardRow">
-          {row.map((L) => {
-            const l = norm(L);
-            const used = guessesSet.has(l);
-            const disabled = used || state.status !== "playing";
+          <div className="gameKeyboard">
+            <div className="keyboard" role="group" aria-label="On-screen keyboard">
+              {KEYBOARD_ROWS.map((row, rIdx) => (
+                <div
+                  key={rIdx}
+                  className="keyboardRow keyboardRowGrid"
+                  style={{ ["--cols" as any]: row.length }}
+                >
+                  {row.map((L) => {
+                    const used = guessesSet.has(norm(L));
+                    const disabled = used || state.status !== "playing";
+                    return (
+                      <button
+                        key={L}
+                        className={keyClass(L)}
+                        disabled={disabled}
+                        onClick={() => onGuess(L)}
+                        aria-pressed={used}
+                      >
+                        {L}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
 
-            return (
-              <button
-                key={L}
-                className={keyClass(L)}
-                disabled={disabled}
-                onClick={() => onGuess(L)}
-                aria-pressed={used}
-              >
-                {L}
-              </button>
-            );
-          })}
-        </div>
-      ))}
-    </div>
+            {ended && !showResult && (
+              <div className="actions" style={{ marginTop: 10 }}>
+                <button className="primaryBtn" onClick={() => setShowResult(true)}>
+                  Vís úrslit
+                </button>
+              </div>
+            )}
+          </div>
+        </main>
 
-    {ended && !showResult && (
-      <div className="actions" style={{ marginTop: 10 }}>
-        <button className="primaryBtn" onClick={() => setShowResult(true)}>
-          Vís úrslit
-        </button>
-      </div>
-    )}
-  </div>
-</main>
-
-
-        {/* ✅ Simple “bottom bar” under the game */}
         <div className="footerBar" style={{ marginTop: 12 }}>
           <div className="footerBarLeft">
             <div className="brand" style={{ gap: 10 }}>
@@ -352,7 +355,10 @@ export default function HangmanGame() {
             </div>
           </div>
 
-          <div className="footerBarRight" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          <div
+            className="footerBarRight"
+            style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}
+          >
             <button className="iconBtn" onClick={() => setShowHelp(true)} aria-label="Hvussu spæli eg?">
               ?
             </button>
@@ -385,7 +391,6 @@ export default function HangmanGame() {
           </div>
         </div>
 
-        {/* How to play modal */}
         {showHelp && (
           <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="How to play" onMouseDown={closeHelp}>
             <div className="modal" onMouseDown={(e) => e.stopPropagation()}>
@@ -425,7 +430,6 @@ export default function HangmanGame() {
           </div>
         )}
 
-        {/* Result modal */}
         {showResult && (
           <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="Úrslit" onMouseDown={closeResult}>
             <div className="modal" onMouseDown={(e) => e.stopPropagation()}>

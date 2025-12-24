@@ -595,50 +595,67 @@ body {
   padding: 12px 0 0;
 }
 
-/* ---------- Mobile no-scroll layout ---------- */
+/* ---------- Mobile no-scroll layout (improved keyboard + desktop spacing) ---------- */
 
-/* Use dynamic viewport height to avoid Safari address bar issues */
 .page {
-  min-height: 100dvh; /* overrides your min-height:100vh nicely on mobile */
+  min-height: 100dvh; /* dynamic viewport */
 }
 
-/* Make the whole app fill the screen and behave like a game layout */
 .app {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
-/* Game card becomes the main flexible area */
+/* main card can grow but must allow shrinking */
 .gameCard {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* critical so children can shrink without overflow */
+  min-height: 0;
 }
 
-/* Top content + keyboard split */
+/* top section */
 .gameTop {
   flex: 0 0 auto;
 }
 
+/* keyboard section */
 .gameKeyboard {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* push keyboard down to use remaining space nicely */
+  justify-content: flex-start; /* ✅ desktop: NO giant gap */
 }
 
-/* Prevent the keyboard from causing accidental overflow on tight screens */
+/* make each row a grid so it NEVER wraps into tiny 2-letter lines */
+.keyboardRowGrid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* keys must be allowed to shrink */
+.key {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 0;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+/* reduce default keyboard spacing a bit */
 .keyboard {
-  overflow: hidden;
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
 }
 
-/* ---------- Tighten spacing + scale elements on small screens ---------- */
+/* ---------- Mobile tightening ---------- */
 @media (max-width: 520px) {
   .page {
-    padding-top: 10px; /* less top padding */
+    padding-top: 10px;
   }
 
   .app {
@@ -650,7 +667,6 @@ body {
     border-radius: 18px;
   }
 
-  /* Make header row smaller */
   .cardHeader {
     margin-bottom: 8px;
   }
@@ -664,46 +680,42 @@ body {
     font-size: 11px;
   }
 
-  /* Shrink hangman + meta */
   .hangmanRow {
     gap: 10px;
     margin-bottom: 8px;
   }
 
   .hangmanSvg {
-    width: 92px; /* smaller than your default 120px */
+    width: 86px;
   }
 
-  /* Masked sentence: responsive */
   .masked {
-    font-size: clamp(18px, 4.8vw, 26px);
-    letter-spacing: 1.5px;
+    font-size: clamp(18px, 5.2vw, 26px);
+    letter-spacing: 1.4px;
     margin-top: 8px;
   }
 
   .hint {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-size: 12px;
   }
 
-  /* Keyboard: smaller buttons, tighter gaps */
-  .keyboard {
-    margin-top: 10px;
+  /* ✅ on mobile we DO push keyboard down so no scrolling */
+  .gameKeyboard {
+    justify-content: flex-end;
+  }
+
+  .keyboardRowGrid {
     gap: 6px;
   }
 
-  .keyboardRow {
-    gap: 6px;
-  }
-
+  /* ✅ bigger + cleaner keys on mobile */
   .key {
-    min-width: 34px;
-    padding: 9px 10px;
-    border-radius: 11px;
-    font-size: 14px;
+    padding: 11px 0;
+    border-radius: 12px;
+    font-size: 16px;
   }
 
-  /* Bottom bar also tighter */
   .footerBar {
     margin-top: 10px !important;
   }
@@ -726,18 +738,16 @@ body {
   }
 }
 
-/* Extra tiny phones */
 @media (max-width: 380px) {
   .hangmanSvg {
-    width: 80px;
+    width: 78px;
   }
   .key {
-    min-width: 32px;
-    padding: 8px 9px;
-    font-size: 13px;
+    padding: 10px 0;
+    font-size: 15px;
   }
   .masked {
-    font-size: clamp(17px, 4.9vw, 23px);
+    font-size: clamp(17px, 5.2vw, 23px);
     letter-spacing: 1.2px;
   }
 }

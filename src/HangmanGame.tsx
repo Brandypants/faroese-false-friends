@@ -18,12 +18,7 @@ function HangmanFigure({ wrong }: { wrong: number }) {
   const showRightLeg = w >= 6;
 
   return (
-    <svg
-      viewBox="0 0 140 160"
-      className="hangmanSvg"
-      role="img"
-      aria-label={`Hangman figure. Wrong guesses: ${w} of 6.`}
-    >
+    <svg viewBox="0 0 140 160" className="hangmanSvg" role="img" aria-label={`Hangman figure. Wrong guesses: ${w} of 6.`}>
       <line x1="20" y1="140" x2="120" y2="140" className="hangmanStroke" />
       <line x1="40" y1="140" x2="40" y2="20" className="hangmanStroke" />
       <line x1="40" y1="20" x2="90" y2="20" className="hangmanStroke" />
@@ -74,11 +69,21 @@ function daysBetweenLocal(aISO: string, bISO: string) {
   return Math.floor((aa - bb) / (1000 * 60 * 60 * 24));
 }
 
+function getOrInitStartDateISO(): string {
+  const KEY = "ordafellan_hang_start_date";
+  const existing = localStorage.getItem(KEY);
+  if (existing && /^\d{4}-\d{2}-\d{2}$/.test(existing)) return existing;
+
+  const first = todayISO();
+  localStorage.setItem(KEY, first);
+  return first;
+}
+
 export default function HangmanGame() {
   const [puzzles, setPuzzles] = useState<HangmanPuzzle[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const todayIso = useMemo(() => todayISO(), []);
+  const [todayIso, setTodayIso] = useState(() => todayISO());
   const [stats, setStats] = useState(() => loadStats());
   const [countdown, setCountdown] = useState(() => formatCountdown(msUntilNextLocalMidnight()));
   const [copied, setCopied] = useState(false);
@@ -86,17 +91,26 @@ export default function HangmanGame() {
   const [showHelp, setShowHelp] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
-  // ✅ “Today is first day” anchor. This is fixed per user/device at first load.
-  // If you want a global fixed start date for everyone, replace this with a constant like "2025-12-23".
-  const START_DATE_ISO = useMemo(() => localISO(new Date()), []);
+  const START_DATE_ISO = useMemo(() => getOrInitStartDateISO(), []);
 
-  // ✅ Bring back arrows with dayOffset, but do NOT allow going before day 0.
   const [dayOffset, setDayOffset] = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => {
       setCountdown(formatCountdown(msUntilNextLocalMidnight()));
+
+      const nowIso = todayISO();
+      setTodayIso((prev) => {
+        if (prev !== nowIso) {
+          setDayOffset(0);
+          setCopied(false);
+          setShowResult(false);
+          return nowIso;
+        }
+        return prev;
+      });
     }, 1000);
+
     return () => clearInterval(t);
   }, []);
 
@@ -106,19 +120,15 @@ export default function HangmanGame() {
       .catch((e) => setError(e instanceof Error ? e.message : String(e)));
   }, []);
 
-  // Selected date changes with arrows
   const selectedDateISO = useMemo(() => addLocalDays(todayIso, dayOffset), [todayIso, dayOffset]);
 
-  // dayIndex is based on START_DATE + selectedDate
   const picked = useMemo(() => {
     if (!puzzles) return null;
 
     const dayIndex = daysBetweenLocal(selectedDateISO, START_DATE_ISO);
-    if (dayIndex < 0) return null; // before launch day (should be prevented by UI)
+    if (dayIndex < 0) return null;
 
-    // Keep behavior consistent with your current code: wraps if you go past the end.
     const idx = ((dayIndex % puzzles.length) + puzzles.length) % puzzles.length;
-
     return { dayIndex, puzzle: puzzles[idx] };
   }, [puzzles, selectedDateISO, START_DATE_ISO]);
 
@@ -131,15 +141,14 @@ export default function HangmanGame() {
 
   useEffect(() => {
     if (!dayKey) return;
+
     const existing = loadHangmanState(dayKey) as HangmanState | null;
     const loaded = existing ?? initialState();
     setState(loaded);
 
-    if (loaded.status === "won" || loaded.status === "lost") {
-      setShowResult(true);
-    } else {
-      setShowResult(false);
-    }
+    if (loaded.status === "won" || loaded.status === "lost") setShowResult(true);
+    else setShowResult(false);
+
     setCopied(false);
   }, [dayKey]);
 
@@ -155,6 +164,14 @@ export default function HangmanGame() {
     return mask(picked.puzzle.solution, guessesSet);
   }, [picked, guessesSet]);
 
+  const maxBack = useMemo(() => {
+    const daysSinceStart = daysBetweenLocal(todayIso, START_DATE_ISO);
+    return Math.max(0, daysSinceStart);
+  }, [todayIso, START_DATE_ISO]);
+
+  const canGoPrev = dayOffset > -maxBack;
+  const canGoNext = dayOffset < 0;
+
   function commit(next: HangmanState) {
     if (!picked || !dayKey) return;
 
@@ -164,9 +181,7 @@ export default function HangmanGame() {
     setState(next);
     saveHangmanState(dayKey, next);
 
-    // ✅ Only count stats when you finish TODAY’s puzzle (not browsing old days)
     const isToday = selectedDateISO === todayIso;
-
     if (wasPlaying && nowEnded && isToday) {
       const result = { date: selectedDateISO, choiceIndex: -1, correct: next.status === "won" };
       const updated = applyResultToStats(stats, result);
@@ -174,9 +189,7 @@ export default function HangmanGame() {
       setStats(updated);
     }
 
-    if (wasPlaying && nowEnded) {
-      setShowResult(true);
-    }
+    if (wasPlaying && nowEnded) setShowResult(true);
   }
 
   function onGuess(letter: string) {
@@ -198,12 +211,9 @@ export default function HangmanGame() {
     if (state.status === "playing") return;
 
     const title = `Hangman (Orðafellan) — ${selectedDateISO}`;
-    const correctIcons = "✅".repeat(MAX_LIVES - state.wrong);
-    const wrongIcons = "❌".repeat(state.wrong);
-    const icons = `${wrongIcons}${correctIcons}`;
+    const icons = `${"❌".repeat(state.wrong)}${"✅".repeat(MAX_LIVES - state.wrong)}`;
     const streak = `Streak: ${stats.streak}`;
     const next = `Nýggj gáta um: ${countdown} tímar`;
-
     const text = `${title}\n${icons}\n${streak}\n${next}\nhttps://ordafellan.fo/`;
 
     navigator.clipboard
@@ -229,26 +239,10 @@ export default function HangmanGame() {
         if (showHelp) closeHelp();
         if (showResult) closeResult();
       }
-      // Optional: keyboard navigation for days
-      if (e.key === "ArrowLeft") {
-        setDayOffset((d) => Math.max(-maxBack, d - 1));
-      }
-      if (e.key === "ArrowRight") {
-        setDayOffset((d) => Math.min(0, d + 1));
-      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [showHelp, showResult]);
-
-  // How far back can they go? Not before start date.
-  const maxBack = useMemo(() => {
-    const daysSinceStart = daysBetweenLocal(todayIso, START_DATE_ISO); // today - start
-    return Math.max(0, daysSinceStart);
-  }, [todayIso, START_DATE_ISO]);
-
-  const canGoPrev = dayOffset > -maxBack;
-  const canGoNext = dayOffset < 0;
 
   if (error)
     return (
@@ -281,50 +275,7 @@ export default function HangmanGame() {
   return (
     <div className="page">
       <div className="app">
-        <header className="topbar">
-          <div className="brand">
-            <div className="brandMark">
-              <img className="brandLogo" src="/favicon.png" alt="Orðafellan logo" />
-            </div>
-            <div className="brandText">
-              <div className="brandName">Orðafellan</div>
-              <div className="brandTag">Hangman · eitt spæl um dagin</div>
-            </div>
-          </div>
-
-          <div className="rightHeader">
-            <div className="headerActions">
-              <button className="iconBtn" onClick={() => setShowHelp(true)} aria-label="Hvussu spæli eg?">
-                ?
-              </button>
-
-              {/* ✅ Arrows are back */}
-              <button
-                className="iconBtn"
-                onClick={() => setDayOffset((d) => Math.max(-maxBack, d - 1))}
-                disabled={!canGoPrev}
-                aria-label="Fyrra dag"
-                title="Fyrra dag"
-              >
-                ←
-              </button>
-
-              <div className="pill">{selectedDateISO}</div>
-
-              <button
-                className="iconBtn"
-                onClick={() => setDayOffset((d) => Math.min(0, d + 1))}
-                disabled={!canGoNext}
-                aria-label="Næsta dag"
-                title="Næsta dag"
-              >
-                →
-              </button>
-            </div>
-            <div className="mini">{headerStats}</div>
-          </div>
-        </header>
-
+        {/* ✅ GAME FIRST (mobile users see keyboard immediately) */}
         <main className="card">
           <div className="cardHeader">
             <div className="badge">Dagsins orðatak</div>
@@ -376,16 +327,54 @@ export default function HangmanGame() {
           )}
         </main>
 
-        <footer className="footer">
-          <div className="footerRow">
-            <span className="mono">Orðafellan</span>
-            <span className="dot">•</span>
-            <span>Hangman</span>
-            <span className="dot">•</span>
-            <span>Stats saved on this device</span>
+        {/* ✅ Simple “bottom bar” under the game */}
+        <div className="footerBar" style={{ marginTop: 12 }}>
+          <div className="footerBarLeft">
+            <div className="brand" style={{ gap: 10 }}>
+              <img className="brandLogo" src="/favicon.png" alt="Orðafellan logo" style={{ width: 28, height: 28 }} />
+              <div className="brandText">
+                <div className="brandName" style={{ fontSize: 18, lineHeight: 1.05 }}>
+                  Orðafellan
+                </div>
+                <div className="brandTag">Hangman · eitt spæl um dagin</div>
+              </div>
+            </div>
           </div>
-        </footer>
 
+          <div className="footerBarRight" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <button className="iconBtn" onClick={() => setShowHelp(true)} aria-label="Hvussu spæli eg?">
+              ?
+            </button>
+
+            <button
+              className="iconBtn"
+              onClick={() => setDayOffset((d) => Math.max(-maxBack, d - 1))}
+              disabled={!canGoPrev}
+              aria-label="Fyrra dag"
+              title="Fyrra dag"
+            >
+              ←
+            </button>
+
+            <div className="pill">{selectedDateISO}</div>
+
+            <button
+              className="iconBtn"
+              onClick={() => setDayOffset((d) => Math.min(0, d + 1))}
+              disabled={!canGoNext}
+              aria-label="Næsta dag"
+              title="Næsta dag"
+            >
+              →
+            </button>
+          </div>
+
+          <div className="mini" style={{ marginTop: 8 }}>
+            {headerStats}
+          </div>
+        </div>
+
+        {/* How to play modal */}
         {showHelp && (
           <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="How to play" onMouseDown={closeHelp}>
             <div className="modal" onMouseDown={(e) => e.stopPropagation()}>
@@ -425,6 +414,7 @@ export default function HangmanGame() {
           </div>
         )}
 
+        {/* Result modal */}
         {showResult && (
           <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="Úrslit" onMouseDown={closeResult}>
             <div className="modal" onMouseDown={(e) => e.stopPropagation()}>

@@ -276,56 +276,67 @@ export default function HangmanGame() {
     <div className="page">
       <div className="app">
         {/* ✅ GAME FIRST (mobile users see keyboard immediately) */}
-        <main className="card">
-          <div className="cardHeader">
-            <div className="badge">Dagsins orðatak</div>
-            <div className="timer">
-              Nýtt spæl um <span className="mono">{countdown}</span>
-            </div>
-          </div>
+        <main className="card gameCard">
+  <div className="gameTop">
+    <div className="cardHeader">
+      <div className="badge">Dagsins orðatak</div>
+      <div className="timer">
+        Nýtt spæl um <span className="mono">{countdown}</span>
+      </div>
+    </div>
 
-          <div className="hangmanRow">
-            <HangmanFigure wrong={state.wrong} />
-            <div className="hangmanMeta">
-              <div className="hangmanLabel">Mistøk</div>
-              <div className="hangmanValue">
-                {state.wrong} / {MAX_LIVES}
-              </div>
-            </div>
-          </div>
+    <div className="hangmanRow">
+      <HangmanFigure wrong={state.wrong} />
+      <div className="hangmanMeta">
+        <div className="hangmanLabel">Mistøk</div>
+        <div className="hangmanValue">
+          {state.wrong} / {MAX_LIVES}
+        </div>
+      </div>
+    </div>
 
-          {hint && <div className="hint">Hint: {hint}</div>}
+    {hint && <div className="hint">Hint: {hint}</div>}
 
-          <div className="masked" aria-label="Puzzle">
-            {masked}
-          </div>
+    <div className="masked" aria-label="Puzzle">
+      {masked}
+    </div>
+  </div>
 
-          <div className="keyboard" role="group" aria-label="On-screen keyboard">
-            {KEYBOARD_ROWS.map((row, rIdx) => (
-              <div key={rIdx} className="keyboardRow">
-                {row.map((L) => {
-                  const l = norm(L);
-                  const used = guessesSet.has(l);
-                  const disabled = used || state.status !== "playing";
+  <div className="gameKeyboard">
+    <div className="keyboard" role="group" aria-label="On-screen keyboard">
+      {KEYBOARD_ROWS.map((row, rIdx) => (
+        <div key={rIdx} className="keyboardRow">
+          {row.map((L) => {
+            const l = norm(L);
+            const used = guessesSet.has(l);
+            const disabled = used || state.status !== "playing";
 
-                  return (
-                    <button key={L} className={keyClass(L)} disabled={disabled} onClick={() => onGuess(L)} aria-pressed={used}>
-                      {L}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-
-          {ended && !showResult && (
-            <div className="actions" style={{ marginTop: 12 }}>
-              <button className="primaryBtn" onClick={() => setShowResult(true)}>
-                Vís úrslit
+            return (
+              <button
+                key={L}
+                className={keyClass(L)}
+                disabled={disabled}
+                onClick={() => onGuess(L)}
+                aria-pressed={used}
+              >
+                {L}
               </button>
-            </div>
-          )}
-        </main>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+
+    {ended && !showResult && (
+      <div className="actions" style={{ marginTop: 10 }}>
+        <button className="primaryBtn" onClick={() => setShowResult(true)}>
+          Vís úrslit
+        </button>
+      </div>
+    )}
+  </div>
+</main>
+
 
         {/* ✅ Simple “bottom bar” under the game */}
         <div className="footerBar" style={{ marginTop: 12 }}>

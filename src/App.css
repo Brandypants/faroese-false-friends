@@ -595,4 +595,151 @@ body {
   padding: 12px 0 0;
 }
 
+/* ---------- Mobile no-scroll layout ---------- */
+
+/* Use dynamic viewport height to avoid Safari address bar issues */
+.page {
+  min-height: 100dvh; /* overrides your min-height:100vh nicely on mobile */
+}
+
+/* Make the whole app fill the screen and behave like a game layout */
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Game card becomes the main flexible area */
+.gameCard {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* critical so children can shrink without overflow */
+}
+
+/* Top content + keyboard split */
+.gameTop {
+  flex: 0 0 auto;
+}
+
+.gameKeyboard {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* push keyboard down to use remaining space nicely */
+}
+
+/* Prevent the keyboard from causing accidental overflow on tight screens */
+.keyboard {
+  overflow: hidden;
+}
+
+/* ---------- Tighten spacing + scale elements on small screens ---------- */
+@media (max-width: 520px) {
+  .page {
+    padding-top: 10px; /* less top padding */
+  }
+
+  .app {
+    padding: 10px 0 10px;
+  }
+
+  .card {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  /* Make header row smaller */
+  .cardHeader {
+    margin-bottom: 8px;
+  }
+
+  .badge {
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+
+  .timer {
+    font-size: 11px;
+  }
+
+  /* Shrink hangman + meta */
+  .hangmanRow {
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .hangmanSvg {
+    width: 92px; /* smaller than your default 120px */
+  }
+
+  /* Masked sentence: responsive */
+  .masked {
+    font-size: clamp(18px, 4.8vw, 26px);
+    letter-spacing: 1.5px;
+    margin-top: 8px;
+  }
+
+  .hint {
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+
+  /* Keyboard: smaller buttons, tighter gaps */
+  .keyboard {
+    margin-top: 10px;
+    gap: 6px;
+  }
+
+  .keyboardRow {
+    gap: 6px;
+  }
+
+  .key {
+    min-width: 34px;
+    padding: 9px 10px;
+    border-radius: 11px;
+    font-size: 14px;
+  }
+
+  /* Bottom bar also tighter */
+  .footerBar {
+    margin-top: 10px !important;
+  }
+
+  .pill {
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+
+  .iconBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 11px;
+  }
+
+  .mini {
+    font-size: 12px;
+    line-height: 1.25;
+    margin-top: 6px !important;
+  }
+}
+
+/* Extra tiny phones */
+@media (max-width: 380px) {
+  .hangmanSvg {
+    width: 80px;
+  }
+  .key {
+    min-width: 32px;
+    padding: 8px 9px;
+    font-size: 13px;
+  }
+  .masked {
+    font-size: clamp(17px, 4.9vw, 23px);
+    letter-spacing: 1.2px;
+  }
+}
+
 

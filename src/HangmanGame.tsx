@@ -373,21 +373,7 @@ export default function HangmanGame() {
     </button>
   </div>
 
-  {/* Row 2: Brand (centered) */}
-  <div className="footerBrand">
-    <img
-      className="brandLogo"
-      src="/favicon.png"
-      alt="Orðafellan logo"
-      style={{ width: 28, height: 28 }}
-    />
-    <div className="footerBrandText">
-      <div className="footerBrandName">Orðafellan</div>
-      <div className="footerBrandTag">Hangman · eitt spæl um dagin</div>
-    </div>
-  </div>
-
-  {/* Row 3: Stats (centered) */}
+  {/* Row 2: Stats (centered) */}
   <div className="footerStats">{headerStats}</div>
 </div>
 

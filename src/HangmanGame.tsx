@@ -40,9 +40,10 @@ function HangmanFigure({ wrong }: { wrong: number }) {
 }
 
 const KEYBOARD_ROWS: string[][] = [
-  ["A", "Á", "B", "D", "Ð", "E", "F", "G", "H", "I",],
-  ["Í", "J", "K", "L", "M", "N", "O", "Ó", "P", "R"],
-  ["S", "T", "U", "Ú", "V", "Y", "Ý", "Æ", "Ø"],
+  ["A", "Á", "B", "D", "Ð", "E", "F",],
+  ["G", "H", "I", "Í", "J", "K", "L",],
+  ["M", "N", "O", "Ó", "P", "R", "S",],
+  ["T", "U", "Ú", "V", "Y", "Ý", "Æ", "Ø"],
 ];
 
 function initialState(): HangmanState {

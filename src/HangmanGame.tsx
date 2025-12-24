@@ -449,7 +449,7 @@ export default function HangmanGame() {
 
                 <div className="actions" style={{ marginTop: 12 }}>
                   <button onClick={share} className="primaryBtn">
-                    Deil spæl
+                    Deil úrslit
                   </button>
                   {copied && <div className="copied">Copied!</div>}
                 </div>

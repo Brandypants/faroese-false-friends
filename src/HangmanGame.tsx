@@ -344,53 +344,53 @@ export default function HangmanGame() {
         </main>
 
         <div className="footerBar" style={{ marginTop: 12 }}>
-          <div className="footerBarLeft">
-            <div className="brand" style={{ gap: 10 }}>
-              <img className="brandLogo" src="/favicon.png" alt="Orðafellan logo" style={{ width: 28, height: 28 }} />
-              <div className="brandText">
-                <div className="brandName" style={{ fontSize: 18, lineHeight: 1.05 }}>
-                  Orðafellan
-                </div>
-                <div className="brandTag">Hangman · eitt spæl um dagin</div>
-              </div>
-            </div>
-          </div>
+  {/* Row 1: Controls (centered) */}
+  <div className="footerControls">
+    <button className="iconBtn" onClick={() => setShowHelp(true)} aria-label="Hvussu spæli eg?">
+      ?
+    </button>
 
-          <div
-            className="footerBarRight"
-            style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}
-          >
-            <button className="iconBtn" onClick={() => setShowHelp(true)} aria-label="Hvussu spæli eg?">
-              ?
-            </button>
+    <button
+      className="iconBtn"
+      onClick={() => setDayOffset((d) => Math.max(-maxBack, d - 1))}
+      disabled={!canGoPrev}
+      aria-label="Fyrra dag"
+      title="Fyrra dag"
+    >
+      ←
+    </button>
 
-            <button
-              className="iconBtn"
-              onClick={() => setDayOffset((d) => Math.max(-maxBack, d - 1))}
-              disabled={!canGoPrev}
-              aria-label="Fyrra dag"
-              title="Fyrra dag"
-            >
-              ←
-            </button>
+    <div className="pill">{selectedDateISO}</div>
 
-            <div className="pill">{selectedDateISO}</div>
+    <button
+      className="iconBtn"
+      onClick={() => setDayOffset((d) => Math.min(0, d + 1))}
+      disabled={!canGoNext}
+      aria-label="Næsta dag"
+      title="Næsta dag"
+    >
+      →
+    </button>
+  </div>
 
-            <button
-              className="iconBtn"
-              onClick={() => setDayOffset((d) => Math.min(0, d + 1))}
-              disabled={!canGoNext}
-              aria-label="Næsta dag"
-              title="Næsta dag"
-            >
-              →
-            </button>
-          </div>
+  {/* Row 2: Brand (centered) */}
+  <div className="footerBrand">
+    <img
+      className="brandLogo"
+      src="/favicon.png"
+      alt="Orðafellan logo"
+      style={{ width: 28, height: 28 }}
+    />
+    <div className="footerBrandText">
+      <div className="footerBrandName">Orðafellan</div>
+      <div className="footerBrandTag">Hangman · eitt spæl um dagin</div>
+    </div>
+  </div>
 
-          <div className="mini" style={{ marginTop: 8 }}>
-            {headerStats}
-          </div>
-        </div>
+  {/* Row 3: Stats (centered) */}
+  <div className="footerStats">{headerStats}</div>
+</div>
+
 
         {showHelp && (
           <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="How to play" onMouseDown={closeHelp}>

@@ -752,4 +752,73 @@ body {
   }
 }
 
+/* ---------- Centered footer bar layout ---------- */
+
+.footerBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+/* Row 1 */
+.footerControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Row 2 */
+.footerBrand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.footerBrandText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+
+.footerBrandName {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0.2px;
+}
+
+.footerBrandTag {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Row 3 */
+.footerStats {
+  font-size: 12.5px;
+  color: var(--faint);
+  line-height: 1.25;
+  max-width: 520px;
+}
+
+/* Mobile tightening */
+@media (max-width: 520px) {
+  .footerBrandName {
+    font-size: 17px;
+  }
+  .footerBrandTag {
+    font-size: 12.5px;
+  }
+  .footerStats {
+    font-size: 12px;
+    max-width: 340px;
+  }
+}
+
+
 

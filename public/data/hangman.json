@@ -1,17 +1,12 @@
 [
     {
-      "id": "ungur-nemur",
-      "solution": "Ungur nemur, gamal fremur",
-      "hint": "Tað tú lærir ungur, nýtir tú seinni í lívinum."
-    },
-    {
       "id": "allur-bati",
-      "solution": "Allur bati bøtir.",
+      "solution": "Allur bati bøtir",
       "hint": "Øll hjálp er góð hjálp — eisini lítil bati."
     },
     {
       "id": "eftir-latur",
-      "solution": "Eftir látur kemur grátur.",
+      "solution": "Eftir látur kemur grátur",
       "hint": "Góð løta kann skjótt venda — alt hevur sín enda."
     },
     {
@@ -88,6 +83,11 @@
         "id": "best-er-at-binda",
         "solution": "Brent barn ræðist eld",
         "hint": "Tínar upplivingar ávirka teg — tú verður varin."
+      },
+      {
+        "id": "ungur-nemur",
+        "solution": "Ungur nemur, gamal fremur",
+        "hint": "Tað tú lærir ungur, nýtir tú seinni í lívinum."
       }
   ]
   

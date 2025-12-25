@@ -75,16 +75,6 @@ function daysBetweenLocal(aISO: string, bISO: string) {
   return Math.floor((aa - bb) / (1000 * 60 * 60 * 24));
 }
 
-function getOrInitStartDateISO(): string {
-  const KEY = "ordafellan_hang_start_date";
-  const existing = localStorage.getItem(KEY);
-  if (existing && /^\d{4}-\d{2}-\d{2}$/.test(existing)) return existing;
-
-  const first = todayISO();
-  localStorage.setItem(KEY, first);
-  return first;
-}
-
 export default function HangmanGame() {
   const [puzzles, setPuzzles] = useState<HangmanPuzzle[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -97,7 +87,7 @@ export default function HangmanGame() {
   const [showHelp, setShowHelp] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
-  const START_DATE_ISO = useMemo(() => getOrInitStartDateISO(), []);
+  const START_DATE_ISO = "2025-12-23";
   const [dayOffset, setDayOffset] = useState(0);
 
   useEffect(() => {
@@ -451,7 +441,7 @@ export default function HangmanGame() {
                   <button onClick={share} className="primaryBtn">
                     Deil úrslit
                   </button>
-                  {copied && <div className="copied">Copied!</div>}
+                  {copied && <div className="copied">Úrslit viðheft!</div>}
                 </div>
 
                 <div className="privacyNote">Deilir bara úrslitið — ikki orðatakið.</div>

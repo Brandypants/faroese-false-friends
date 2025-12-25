@@ -17,7 +17,7 @@
     {
       "id": "sjalvgjort-er-vaelgjort",
       "solution": "Sjálvgjørt er vælgjørt",
-      "hint": "Tínar gerðir fáa avleiðingar."
+      "hint": "Tað, tú gert, fær fylgir."
     },
     {
       "id": "ikki-alt-gull",
@@ -28,11 +28,6 @@
       "id": "spilta-mjolk",
       "solution": "Tað er einki at gráta um spilta mjólk",
       "hint": "Nýtist ikki at harmast um tað, sum longu er hent."
-    },
-    {
-      "id": "sum-du-saa",
-      "solution": "Sum tú sáar, so skalt tú heysta",
-      "hint": "Tínar gerðir fáa avleiðingar — tú fært tað aftur, tú gevur."
     },
     {
       "id": "betri-seint",

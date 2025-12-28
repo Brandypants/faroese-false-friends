@@ -26,13 +26,8 @@
     },
     {
       "id": "spilta-mjolk",
-      "solution": "Tað er einki at gráta um spilta mjólk",
+      "solution": "Tað nyttar einki at gráta um spilta mjólk",
       "hint": "Nýtist ikki at harmast um tað, sum longu er hent."
-    },
-    {
-      "id": "betri-seint",
-      "solution": "Betri seint enn ongantíð",
-      "hint": "Betri at fáa tað gjørt seint enn als ikki."
     },
     {
       "id": "rom-var-ikki",
@@ -88,6 +83,11 @@
         "id": "knivleysur-madur",
         "solution": "Knívleysur maður er lívleysur",
         "hint": "Gott er at hava røttu amboðini."
+      },
+      {
+        "id": "betri-seint",
+        "solution": "Betri seint enn ongantíð",
+        "hint": "Betri at fáa tað gjørt seint enn als ikki."
       }
   ]
   

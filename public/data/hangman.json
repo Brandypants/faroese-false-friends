@@ -85,8 +85,63 @@
     "hint": "Gott er at hava røttu amboðini."
   },
   {
-    "id": "betri-seint",
-    "solution": "Betri seint enn ongantíð",
-    "hint": "Betri at fáa tað gjørt seint enn als ikki."
+    "id": "bundin-er-batleysur-madur",
+    "solution": "Bundin er bátleysur maður",
+    "hint": "Tað er týdningarmikið at sleppa til sjós"
+  },
+  {
+    "id": "sotur-er-sjalvgivin",
+    "solution": "Søtur er sjálvgivin biti",
+    "hint": "Tað, ein sjálvur hevur útvegað sær, gagnast best."
+  },
+  {
+    "id": "neyd-laerir-nakna-kvinnu",
+    "solution": "Neyð lærir nakna kvinnu at spinna",
+    "hint": "Torførar umstøður tvinga teg til at hugsa nýtt og annarleiðis."
+  },
+  {
+    "id": "betri-er-botandi-hond",
+    "solution": "Betri er bøtandi hond enn spillandi tunga.",
+    "hint": "Hjálp heldur enn at tosa ilt."
+  },
+  {
+    "id": "sum-lundi-a-jolanatt",
+    "solution": "Sum lundi á jólanátt",
+    "hint": "Ein sjáldsom hending."
+  },
+  {
+    "id": "hvor-fuglur-syngur",
+    "solution": "Hvør fuglur syngur við sínum nevi.",
+    "hint": "Øll hava sína egnu rødd."
+  },
+  {
+    "id": "eingin-veit-a-morgni",
+    "solution": "Eingin veit á morgni at siga, hvar hann á kvøldi gistir.",
+    "hint": "Tú kennir bara dagin í dag."
+  },
+  {
+    "id": "glogt-er-gestsins-eyga",
+    "solution": "Gløgt er gestsins eyga.",
+    "hint": "Nýggj eygu síggja ofta ting, sum vit taka fyri givið."
+  },
+  {
+    "id": "mangir-lokir",
+    "solution": "Mangir løkir smáir gera stórar áir.",
+    "hint": "Alt ger mun."
+  },
+  {
+    "id": "gjord-gerd-fear-onga-vend",
+    "solution": "Gjørd gerð fær onga vend.",
+    "hint": "Gjørt er gjørt"
+  },
+  {
+    "id": "tjovur-tryr",
+    "solution": "Tjóvur trýr, at hvør maður stjelur.",
+    "hint": "Ein óærligur persónur heldur eisini, at onnur er óærlig."
+  },
+  {
+    "id": "blindur-er-bokleysur-madur",
+    "solution": "Blindur er bókleysur maður.",
+    "hint": "Tað er týdningarmikið at nema sær lærdóm."
   }
 ]
